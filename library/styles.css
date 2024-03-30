@@ -1,0 +1,27 @@
+.wrapper {
+    display: grid;
+    grid-template: 100vh / 200px 1fr;
+}
+
+.sidebar {
+    grid-auto-columns: 1 / 2;
+    padding: 20px;
+    background-color: lightcoral;
+}
+
+.booklist {
+    grid-auto-rows: 2 / 3;
+}
+
+.add-book-form {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.add-book-form > form > input {
+    width: 100px;
+    display: block;
+}
+
