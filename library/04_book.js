@@ -10,6 +10,19 @@ function Book(title, author, pages, read=false) {
     }
 }
 
+document.querySelector('#add-book').addEventListener('click', () {
+    addBookToLibrary();
+})
+
+function addBookToLibrary() {
+    const title = prompt('What the title? ');
+    const author = prompt('Who the author? ');
+    const pages = prompt('How many pages? ');
+
+    // Create object with Book constructor
+    myLibrary.push(new Book(title, author, pages))
+}
+
 for (let book of myLibrary) {
     console.log(book.info())
 }
