@@ -1,3 +1,5 @@
+const myLibrary = [];
+
 function Book(title, author, pages, read=false) {
     this.title = title;
     this.author = author;
@@ -8,5 +10,6 @@ function Book(title, author, pages, read=false) {
     }
 }
 
-const father = new Book('Father', 'James Cash', 134);
-console.log(father.info())
+for (let book of myLibrary) {
+    console.log(book.info())
+}
