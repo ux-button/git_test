@@ -30,13 +30,19 @@ const game = (function () {
         }
     }
 
-    const askWhereToSet = function () {
-        const playerChoice = prompt('Where to set? ');
-        return playerChoice.split(', ')
+    const checkGameOver = function (board) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (!board[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     return {
-        checkWin, askWhereToSet
+        checkWin, checkGameOver
     }
 })()
 
@@ -47,13 +53,18 @@ const gameBoard = (function () {
 
     // Put player's choice on board
     const setMark = function (mark, horizontal, vertical) {
-        currentBoard[vertical][horizontal] = mark;
+        if (currentBoard[vertical][horizontal]) {
+            return `This place has already taken`
+        }
+        else {
+            return currentBoard[vertical][horizontal] = mark;
+        }
     }
 
     // Board getter
     const getBoard = () => currentBoard;
 
-    // Visually print the board
+    // Visually print the board to console
     const printBoard = function () {
         let board = ""
         for (let i = 0; i < 3; i++) {
@@ -77,30 +88,11 @@ const gameBoard = (function () {
 })()
 
 
-function Player () {
+const player = (function () {
     const one = 'X';
     const two = 'O';
 
     return {
         one, two
     }
-}
-
-const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  readline.question('Who are you?', name => {
-    console.log(`Hey there ${name}!`);
-    readline.close();
-  });
-
-//let [a, b] = game.askWhereToSet()
-//gameBoard.setMark(a, b)
-
-
-console.log(gameBoard.printBoard())
-
-// TODO Add turn system to find the draw state in the game
-// After 9 turns
+})()
