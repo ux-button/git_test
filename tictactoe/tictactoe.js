@@ -30,6 +30,7 @@ const game = (function () {
         }
     }
 
+    // Check if all fields are occupied
     const checkGameOver = function (board) {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
@@ -94,5 +95,26 @@ const player = (function () {
 
     return {
         one, two
+    }
+})()
+
+
+const gameDisplay = (function () {
+    const flatternArray = function (board) {
+        const flatArray = [];
+        for (i of board) {
+            i.map((x) => flatArray.push(x))
+        }
+        return flatArray;
+    }
+
+    const renderBoard = function (board) {
+        const gameContainer = document.querySelector('#game-container');
+        const div = document.createElement('div');
+        // FINISHED HERE
+    }
+
+    return {
+        flatternArray, renderBoard
     }
 })()
