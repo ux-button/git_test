@@ -1,4 +1,10 @@
 const game = (function () {
+    
+    // Turn getter setter
+    const turn = 0;
+    const getTurn = () => turn;
+    const nextTurn = () => turn++;
+
     // Check win situation
     const checkWin = function (board, player) {
         if ((board[0][0] === player) && (board[0][1] === player) && (board[0][2] === player)) {
@@ -43,7 +49,7 @@ const game = (function () {
     }
 
     return {
-        checkWin, checkGameOver
+        checkWin, checkGameOver, getTurn, nextTurn
     }
 })()
 
@@ -110,8 +116,14 @@ const gameDisplay = (function () {
 
     const renderBoard = function (board) {
         const gameContainer = document.querySelector('#game-container');
-        const div = document.createElement('div');
-        // FINISHED HERE
+
+        // Creating grid from each elemet of the array
+        flatternArray(board).forEach(function (x) {
+            const boardGridItem = document.createElement('div');
+            boardGridItem.classList.add('game-grid-item');
+            boardGridItem.innerHTML = `${x}`;
+            gameContainer.appendChild(boardGridItem);
+        })
     }
 
     return {

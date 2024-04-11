@@ -1,0 +1,11 @@
+#game-container {
+    display: grid;
+    gap: 10px;
+    height: 200px;
+    width: 200px;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.game-grid-item {
+    background-color: lightgray;
+}
