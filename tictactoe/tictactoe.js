@@ -1,132 +1,108 @@
-const game = (function () {
-    
+const game = (() => {
+    let turn = 0;
+
     // Turn getter setter
-    const turn = 0;
     const getTurn = () => turn;
-    const nextTurn = () => turn++;
+    const nextTurn = () => {
+        if (checkGameOver(gameBoard.getBoard(), player.playerTurn())) {
+            alert(`Player ${player.playerTurn()} wins!`);
+        }
+        turn++;
+    }
 
     // Check win situation
-    const checkWin = function (board, player) {
-        if ((board[0][0] === player) && (board[0][1] === player) && (board[0][2] === player)) {
+    const checkGameOver = (board, player) => {
+        if (board[0] === player && board[3] === player && board[6] === player) {
             return true;
         }
-        else if ((board[1][0] === player) && (board[1][1] === player) && (board[1][2] === player)) {
+        else if (board[1] === player && board[4] === player && board[7] === player) {
             return true;
         }
-        else if ((board[2][0] === player) && (board[2][1] === player) && (board[2][2] === player)) {
+        else if (board[2] === player && board[5] === player && board[8] === player) {
             return true;
         }
-        else if ((board[0][0] === player) && (board[1][0] === player) && (board[2][0] === player)) {
+        else if (board[0] === player && board[1] === player && board[2] === player) {
             return true;
         }
-        else if ((board[0][1] === player) && (board[1][1] === player) && (board[2][1] === player)) {
+        else if (board[3] === player && board[4] === player && board[5] === player) {
             return true;
         }
-        else if ((board[0][2] === player) && (board[1][2] === player) && (board[2][2] === player)) {
+        else if (board[6] === player && board[7] === player && board[8] === player) {
             return true;
         }
-        else if ((board[0][0] === player) && (board[1][1] === player) && (board[2][2] === player)) {
+        else if (board[0] === player && board[4] === player && board[8] === player) {
             return true;
         }
-        else if ((board[0][2] === player) && (board[1][1] === player) && (board[2][0] === player)) {
+        else if (board[2] === player && board[4] === player && board[6] === player) {
             return true;
-        }
-        else {
-            return false;
         }
     }
 
-    // Check if all fields are occupied
-    const checkGameOver = function (board) {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (!board[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    return {
-        checkWin, checkGameOver, getTurn, nextTurn
-    }
+    return { getTurn, nextTurn, checkGameOver }
 })()
 
 
-const gameBoard = (function () {
+// Game board
+const gameBoard = (() => {
     // Create empty board
-    let currentBoard = [[false, false, false], [false, false, false], [false, false, false]];
+    let currentBoard = [false, false, false, false, false, false, false, false, false];
 
-    // Put player's choice on board
-    const setMark = function (mark, horizontal, vertical) {
-        if (currentBoard[vertical][horizontal]) {
-            return `This place has already taken`
+    const getBoard = () => currentBoard;
+    const setBoard = (item) => {
+        currentBoard[item] = player.playerTurn();
+    }
+
+    return { getBoard, setBoard }
+})()
+
+
+// Player info
+const player = (() => {
+    const players = ['X', 'O'];
+
+    const playerTurn = () => {
+        if ((game.getTurn() % 2) === 0) {
+            return player.players[0];
         }
         else {
-            return currentBoard[vertical][horizontal] = mark;
+            return player.players[1];
         }
     }
 
-    // Board getter
-    const getBoard = () => currentBoard;
+    return { players, playerTurn }
+})()
 
-    // Visually print the board to console
-    const printBoard = function () {
-        let board = ""
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (currentBoard[i][j] === false) {
-                    board += '·';
+// Display for game
+const gameDisplay = (() => {
+    const gameContainer = document.querySelector('#game-container');
+
+    const startGame = (() => {
+        document.addEventListener('DOMContentLoaded', () => {
+            for (let i = 0; i < gameBoard.getBoard().length; i++) {
+                const boardGridItem = document.createElement('div')
+                boardGridItem.setAttribute('id', `gameitem-${i}`)
+                boardGridItem.classList.add('game-grid-item');
+                if (!i) {
+                    boardGridItem.innerHTML = '';
                 }
-                else {
-                    board += currentBoard[i][j];
-                }
+                gameContainer.appendChild(boardGridItem);
             }
-            board += '\n';
-        }
-        board += '\n';
-        return board;
-    }
-
-    return {
-        setMark, getBoard, printBoard
-    }
-})()
-
-
-const player = (function () {
-    const one = 'X';
-    const two = 'O';
-
-    return {
-        one, two
-    }
-})()
-
-
-const gameDisplay = (function () {
-    const flatternArray = function (board) {
-        const flatArray = [];
-        for (i of board) {
-            i.map((x) => flatArray.push(x))
-        }
-        return flatArray;
-    }
-
-    const renderBoard = function (board) {
-        const gameContainer = document.querySelector('#game-container');
-
-        // Creating grid from each elemet of the array
-        flatternArray(board).forEach(function (x) {
-            const boardGridItem = document.createElement('div');
-            boardGridItem.classList.add('game-grid-item');
-            boardGridItem.innerHTML = `${x}`;
-            gameContainer.appendChild(boardGridItem);
         })
-    }
+    })()
 
-    return {
-        flatternArray, renderBoard
-    }
+    const makeChoice = (() => {
+        gameContainer.addEventListener('click', (event) => {
+            event.target.innerHTML = `${player.playerTurn()}`;
+            event.target.classList.add('checked');
+
+            // Get current item nimber and save to board array
+            const currentItemNumber = event.target.id.split('-')[1]
+            gameBoard.setBoard(currentItemNumber)
+
+            // Next turn
+            game.nextTurn();
+        })
+    })()
+
+    return { startGame, makeChoice }
 })()

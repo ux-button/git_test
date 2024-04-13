@@ -1,0 +1,29 @@
+#grid-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 90vh;
+}
+
+.grid-row {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+}
+
+.grid-item {
+    flex: 1;
+}
+
+.grid-item-clicked {
+    flex: 1;
+    background-color: black;
+}
+
+.grid-item:hover {
+    background-color: black;
+}
+
+.grid-item:active {
+    background-color: black;
+}
