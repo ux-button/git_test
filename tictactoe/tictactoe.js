@@ -1,12 +1,26 @@
 const game = (() => {
     let turn = 0;
 
+    const startGame = () => {
+        turn = 0;
+    }
+
     // Turn getter setter
     const getTurn = () => turn;
+
     const nextTurn = () => {
+        // Check win situation
         if (checkGameOver(gameBoard.getBoard(), player.playerTurn())) {
             alert(`Player ${player.playerTurn()} wins!`);
+            gameDisplay.viewGameOver();
         }
+
+        // Check draw
+        if (getTurn() >= (gameBoard.getBoard().length - 1)) {
+            alert(`Game over in a draw!`);
+            gameDisplay.viewGameOver();
+        }
+
         turn++;
     }
 
@@ -38,21 +52,24 @@ const game = (() => {
         }
     }
 
-    return { getTurn, nextTurn, checkGameOver }
+    return { startGame, getTurn, nextTurn, checkGameOver }
 })()
 
 
 // Game board
 const gameBoard = (() => {
     // Create empty board
-    let currentBoard = [false, false, false, false, false, false, false, false, false];
+    let currentBoard = [];
 
     const getBoard = () => currentBoard;
     const setBoard = (item) => {
         currentBoard[item] = player.playerTurn();
     }
+    const resetBoard = () => {
+        currentBoard = [false, false, false, false, false, false, false, false, false];
+    }
 
-    return { getBoard, setBoard }
+    return { getBoard, setBoard, resetBoard }
 })()
 
 
@@ -72,37 +89,75 @@ const player = (() => {
     return { players, playerTurn }
 })()
 
+
 // Display for game
 const gameDisplay = (() => {
-    const gameContainer = document.querySelector('#game-container');
+    let actionButton = '';
+    let gameBoardContainer = '';
 
-    const startGame = (() => {
+    // Create button with event handler
+    const createButton = (nameOnButton, buttonId) => {
+        const button = document.createElement('button');
+        button.setAttribute('id', buttonId);
+        button.textContent = nameOnButton;
+        document.querySelector('body').appendChild(button);
+        actionButton = document.getElementById(buttonId)
+        actionButton.addEventListener('click', startGame)
+    }
+
+    // Create button after DOM loaded
+    const gameLoaded = (() => {
         document.addEventListener('DOMContentLoaded', () => {
-            for (let i = 0; i < gameBoard.getBoard().length; i++) {
-                const boardGridItem = document.createElement('div')
-                boardGridItem.setAttribute('id', `gameitem-${i}`)
-                boardGridItem.classList.add('game-grid-item');
-                if (!i) {
-                    boardGridItem.innerHTML = '';
-                }
-                gameContainer.appendChild(boardGridItem);
+            createButton('Start Game', 'start');
+        }
+    )})()
+
+    // Create game field
+    const startGame = () => {
+
+        // Zeroing score and board
+        game.startGame();
+        gameBoard.resetBoard();
+
+        // Delete the button
+        actionButton.remove();
+
+        // Create container for grid
+        gameBoardContainer = document.createElement('div')
+        gameBoardContainer.setAttribute('id', 'game-container')
+        document.querySelector('body').appendChild(gameBoardContainer)
+
+        // Create grid inside container
+        for (let i = 0; i < gameBoard.getBoard().length; i++) {
+            const boardGridItem = document.createElement('div')
+            boardGridItem.setAttribute('id', `gameitem-${i}`)
+            boardGridItem.classList.add('game-grid-item');
+            if (!i) {
+                boardGridItem.textContent = '';
             }
-        })
-    })()
+            gameBoardContainer.appendChild(boardGridItem);
+        }
+        gameBoardContainer.addEventListener('click', makeChoice)
+    }
 
-    const makeChoice = (() => {
-        gameContainer.addEventListener('click', (event) => {
-            event.target.innerHTML = `${player.playerTurn()}`;
-            event.target.classList.add('checked');
+    // Pick cell handler
+    const makeChoice = (event) => {
+        event.target.textContent = `${player.playerTurn()}`;
+        event.target.classList.add('checked');
 
-            // Get current item nimber and save to board array
-            const currentItemNumber = event.target.id.split('-')[1]
-            gameBoard.setBoard(currentItemNumber)
+        // Get current item nimber and save to board array
+        const currentItemNumber = event.target.id.split('-')[1]
+        gameBoard.setBoard(currentItemNumber)
 
-            // Next turn
-            game.nextTurn();
-        })
-    })()
+        // Next turn
+        game.nextTurn();
+    }
 
-    return { startGame, makeChoice }
+    // Ending game
+    const viewGameOver = () => {
+        gameBoardContainer.remove();
+        createButton('Restart game', 'restart');
+    }
+
+    return { startGame, viewGameOver }
 })()
