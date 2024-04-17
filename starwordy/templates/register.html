@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Registeration
+{% endblock %}
+
+{% block body %}
+    <h1>Sign up</h1>
+    <form action='/register' method='post'>
+        <input class="large" autofocus autocomplete='off' name='username' placeholder='Username' type='text' minlength='4'>
+        <input class="large" autocomplete='off' name='password' placeholder='Password' type='password'>
+        <button class="main large" type='submit'>Sign up</button>
+    </form>
+{% endblock %}

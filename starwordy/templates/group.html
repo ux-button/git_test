@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ group.name }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ group.name }}</h1>
+    <form action='/answers' method='get'>
+        <input name='group' value='{{ group.name }}' type='hidden'>
+        <input name='card' value='1' type='hidden'>
+        <button class="large main" type=submit>Learn words</button>
+    </form>
+    <div class='card grey'>
+        <h2>Create flipcard</h2>
+        <form action='/group/{{ group.name }}' method='post'>
+            <input class='large' autofocus autocomplete='off' name='word' placeholder='Enter word' type='text'>
+            <input class='large' autocomplete='off' name='definition' placeholder='Enter definition' type='text'>
+            <button class='large settings' type='submit'>Create flipcard</button>
+        </form>
+    </div>
+    {% for flipcard in flipcards %}
+        <div class="card white">
+            <h3>{{ flipcard.word }}</h3>
+            <p>{{ flipcard.definition }}</p>
+            <form action='/delete_flipcard' method='post'>
+                <input name='flipcard_id' value='{{ flipcard.word_id }}' type='hidden'>
+                <input name='group_name' value='{{ group.name }}' type='hidden'>
+                <button class='small settings' type='submit'>Delete flipcard</button>
+            </form>
+        </div>
+    {% endfor %}
+{% endblock %}

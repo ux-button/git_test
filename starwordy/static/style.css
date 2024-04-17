@@ -1,0 +1,149 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-bg-primary: #ffffff;
+    --color-light-green: #F6FFF7;
+    --color-button-primary: #2196F3;
+    --color-button-secondary: #E3F2FD;
+
+    --border-radius-small: 8px;
+    --border-radius-normal: 16px;
+
+    --font-small: 14px;
+
+    font-family: 'Helvetica';
+}
+
+a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 32px;
+    color: black;
+}
+
+h2 {
+    font-size: 24px;
+    color: black;
+}
+
+h3 {
+    font-size: 18px;
+    color: black;
+}
+
+p {
+    font-size: var(--font-small);
+}
+
+.group-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 16px;
+    gap: 16px;
+}
+
+.group-grid .card {
+    width: clamp(30vw, 30%, 50vw);
+    flex: 1 1 auto;
+}
+
+.group-grid .card .ui {
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card {
+    border-radius: var(--border-radius-normal);
+    box-sizing: border-box;
+}
+
+.card.white {
+    background-color: var(--color-bg-primary);
+    border: 1px solid #EFEFEC;
+}
+
+.card.green {
+    background-color: var(--color-light-green, grey);
+}
+
+.ui {
+    padding: 16px;
+}
+
+.ui > form {
+    margin-right: 16px;
+}
+
+.card.white .groups {
+
+}
+
+input {
+    border: 1px solid #E0E0E0;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-small);
+}
+
+input.large {
+    padding: 12px;
+}
+
+button {
+    border: 0px;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-small);
+}
+
+button.small {
+    padding: 8px 12px;
+}
+
+button.large {
+    padding: 12px;
+}
+
+button.main {
+    background-color: var(--color-button-primary, blue);
+    color: white;
+}
+
+button.settings {
+    background-color: var(--color-button-secondary, blue);
+    color: #2196F3;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px;
+}
+
+nav .circle {
+    width: 64px;
+    height: 64px;
+    background-color: grey;
+    border-radius: 100px;
+    margin-right: 16px;
+}
+
+nav .userdata {
+    display: flex;
+    align-items: center;
+}
+
+nav .usergroups {
+    display: flex;
+}

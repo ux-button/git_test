@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block body %}
+    <div class="card green">
+        <div class='ui'>
+            <h2>Create new group</h2>
+            <form action='/' method='post'>
+                <input class="large" autofocus autocomplete='off' name='group_name' placeholder='Group name' type='text'>
+                <button class='large settings' type='submit'>Create group</button>
+            </form>
+        </div>
+    </div>
+    <div class='group-grid'>
+    {% for group in groups %}
+        <div class="card white">
+            <a href='/group/{{ group.name }}'>
+                <div class='groups ui'>
+                    <h3>{{ group.name }}</h3>
+                    <form action='/delete_group' method='post'>
+                        <input name='group_name' type='hidden' value='{{ group.name }}'>
+                        <button class="small settings" type='submit'>Delete group</button>
+                    </form>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

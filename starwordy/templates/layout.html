@@ -1,0 +1,34 @@
+<!DOCTYPE = html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <script src="/static/learning.js" defer></script>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+            {% if session['user_id'] %}
+            <nav>
+                <div class='userdata'>
+                    <div>
+                        <a href='/'>
+                            <div class='circle'></div>
+                        </a>
+                    </div>
+                    <div>
+                        <div>{{ userdata.username }}</div>
+                        <div class='usergroups'>
+                            <div>{{ userdata.groups|length }} groups,&nbsp;</div>
+                            <div>{{ userdata.flipcards|length }} flipcars</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <a href='/logout'>Log out</a>
+                </div>
+            </nav>
+            {% endif %}
+        {% block body %}{% endblock %}
+    </body>
+</html>

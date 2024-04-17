@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ group.name }}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>{{ flipcard.word }}</h1>
+        <form action='/answers' method='get'>
+            <input name='group' value='{{ group.name }}' type='hidden'>
+            <input name='card' value='{{ counter }}' type='hidden'>
+            <button class="main large" type='submit'>Next flipcard</button>
+        </form>
+    </div>
+
+    {% if not answer %}
+    <div>
+        {% for option in options %}
+            <p>
+                <form action='/answers' method='post'>
+                    <input name='group' value='{{ group.name }}' type='hidden'>
+                    <input name='card' value='{{ counter }}' type='hidden'>
+                    <input name='option' value='{{ option.definition }}' type='hidden'>
+                    <button class="settings large" type='submit'>{{ option.definition }}</button>
+                </form>
+            </p>
+        {% endfor %}
+    </div>
+    {% elif answer == 'true' %}
+    <div>
+        <h3>Correct</h3>
+    </div>
+    {% elif answer == 'false' %}
+    <div>
+        <p>Correct answer</p>
+        <h3>{{ flipcard.definition }}</h3>
+    </div>
+    {% endif %}
+
+{% endblock %}

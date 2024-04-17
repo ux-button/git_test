@@ -7,7 +7,6 @@ const game = (() => {
 
     // Turn getter setter
     const getTurn = () => turn;
-
     const nextTurn = () => {
         // Check win situation
         if (checkGameOver(gameBoard.getBoard(), player.playerTurn())) {
@@ -101,8 +100,7 @@ const gameDisplay = (() => {
         button.setAttribute('id', buttonId);
         button.textContent = nameOnButton;
         document.querySelector('body').appendChild(button);
-        actionButton = document.getElementById(buttonId)
-        actionButton.addEventListener('click', startGame)
+        document.getElementById(buttonId).addEventListener('click', startGame);
     }
 
     // Create button after DOM loaded
