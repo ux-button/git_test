@@ -5,7 +5,6 @@ class Task {
     }
 }
 
-
 class Group {
     #tasksList = [];
     #taskQuantity = this.#tasksList.length;
@@ -19,16 +18,42 @@ class Group {
     getTasksList() {
         return this.#tasksList;
     }
-    addTaskToList(task) {
+    getTaskFromGroup(taskName) {
+        const [ task ] = this.#tasksList.filter((task) => task === taskName)
+        return task;
+    }
+    addTaskToGroup(task) {
         this.#tasksList.push(task);
     }
 }
 
+const storageHandler = (() => {
+    let storage = [];
+    const addToStorage = (group) => {
+        storage.push(group)
+    }
+    const loadAllGroups = () => {
+        return storage;
+    }
+    const loadGroup = (name) => {
+        const allGroups = loadAllGroups();
+        const [ foundGroup ] = allGroups.filter((group) => group.current === name)
+        return foundGroup;
+    }
+    const loadCurrentGroup = () => {
+        const allGroups = loadAllGroups();
+        const [ currentGroup ] = allGroups.filter((group) => group.current === true)
+        return currentGroup;
+    }
+    return { addToStorage, loadAllGroups, loadGroup, loadCurrentGroup }
+})();
+
 
 const createContainer = (() => {
-    const div = (parent, type, name, value) => {
+    const div = (parent, type, name, value, text='') => {
         const container = document.createElement(type);
         container.setAttribute(name, value);
+        container.textContent = text;
         document.querySelector(parent).appendChild(container);
     }
     const input = (parent, idName, placeholder) => {
@@ -53,26 +78,19 @@ const createContainer = (() => {
         container.textContent = headerText;
         document.querySelector(parent).appendChild(container);
     }
-    return {div, input, button, header}
+    const task = (taskObject) => {
+        const container = document.querySelector('#task-list-container');
+        const taskContainer = document.createElement('div');
+        const taskTitle = document.createElement('div');
+        taskTitle.textContent = taskObject.title;
+        taskContainer.appendChild(taskTitle)
+        const taskDescription = document.createElement('div');
+        taskDescription.textContent = taskObject.description;
+        taskContainer.appendChild(taskDescription)
+        container.appendChild(taskContainer);
+    }
+    return {div, input, button, header, task}
 })()
-
-
-// Create storage
-const storageHandler = (() => {
-    let storage = [];
-    const getStorage = () => {
-        return storage;
-    }
-    const addToStorage = (group) => {
-        storage.push(group)
-    }
-    const loadCurrentGroup = () => {
-        const allGroups = getStorage();
-        const [ currentGroup ]  = allGroups.filter((group) => group.current === true)
-        return currentGroup;
-    }
-    return { getStorage, addToStorage, loadCurrentGroup }
-})();
 
 
 // Render default controls and group render
@@ -97,11 +115,21 @@ const domReadyHandler = (() => {
 })();
 
 
+const renderTasksList = (groupObject) => {
+    const tasks = groupObject.getTasksList();
+    for (let task of tasks) {
+        createContainer.task(task)
+    }
+}
+
 // Create new task
 const addTask = () => {
+    // Load current group
     const currentGroup = storageHandler.loadCurrentGroup();
     const [ title, description ] = Array.from(document.querySelectorAll('input'));
+    // Add new task
     const newTask = new Task(title.value, description.value)
-    currentGroup.addTaskToList(newTask);
-    console.log(currentGroup)
+    currentGroup.addTaskToGroup(newTask);
+    renderTasksList(currentGroup)
+    //createContainer.task(newTask);
 }
