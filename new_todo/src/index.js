@@ -1,9 +1,13 @@
+import './style.css'
+
+
 class Task {
     constructor(title, description) {
         this.title = title;
         this.description = description;
     }
 }
+
 
 class Group {
     #tasksList = [];
@@ -25,7 +29,11 @@ class Group {
     addTaskToGroup(task) {
         this.#tasksList.push(task);
     }
+    removeTaskFromGroup(taskId) {
+        this.#tasksList.splice(taskId, (taskId + 1))
+    }
 }
+
 
 const storageHandler = (() => {
     let storage = [];
@@ -35,10 +43,9 @@ const storageHandler = (() => {
     const loadAllGroups = () => {
         return storage;
     }
-    const loadGroup = (name) => {
+    const loadGroup = (groupId) => {
         const allGroups = loadAllGroups();
-        const [ foundGroup ] = allGroups.filter((group) => group.current === name)
-        return foundGroup;
+        return allGroups[groupId];
     }
     const loadCurrentGroup = () => {
         const allGroups = loadAllGroups();
@@ -72,64 +79,159 @@ const createContainer = (() => {
         container.textContent = textOnButton;
         document.querySelector(parent).appendChild(container);
     }
-    const header = (parent, headerType, headerText, idName) => {
+    const header = (parent, headerType, headerText) => {
         const container = document.createElement(headerType);
-        container.setAttribute('id', idName);
         container.textContent = headerText;
         document.querySelector(parent).appendChild(container);
     }
-    const task = (taskObject) => {
+    const task = (taskObject, taskId) => {
         const container = document.querySelector('#task-list-container');
+        // Item container
         const taskContainer = document.createElement('div');
+        taskContainer.setAttribute('id', `task-${taskId}`);
+        taskContainer.classList.add('task-item')
+        // Checkbox
+        const checkbox = document.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('id', `item-${taskId}`);
+        checkbox.classList.add('task-item-checkbox')
+        checkbox.textContent = 'Delete';
+        checkbox.addEventListener('click', groupView.removeTaskContainer)
+        taskContainer.appendChild(checkbox);
+        // Title
         const taskTitle = document.createElement('div');
+        taskTitle.classList.add('task-item-title')
         taskTitle.textContent = taskObject.title;
         taskContainer.appendChild(taskTitle)
+        // Description
         const taskDescription = document.createElement('div');
+        taskDescription.classList.add('task-item-description')
         taskDescription.textContent = taskObject.description;
-        taskContainer.appendChild(taskDescription)
+        taskContainer.appendChild(taskDescription);
+        // Render item
         container.appendChild(taskContainer);
     }
-    return {div, input, button, header, task}
+    const group = (groupObject, groupId) => {
+        const container = document.querySelector('#group-select-container');
+        // Item container
+        const groupContainer = document.createElement('div');
+        groupContainer.setAttribute('id', `group-${groupId}`);
+        groupContainer.classList.add('group-item')
+        // Title
+        const groupTitle = document.createElement('div');
+        groupTitle.textContent = groupObject.groupName;
+        groupTitle.setAttribute('id', `groupitem-${groupId}`);
+        groupTitle.addEventListener('click', viewSwap.toTasksView);
+        groupContainer.appendChild(groupTitle);
+        // Render item
+        //groupContainer.addEventListener('click', viewSwap.toTasksView);
+        container.appendChild(groupContainer);
+    }
+    return {div, input, button, header, task, group }
 })()
 
 
-// Render default controls and group render
-const domReadyHandler = (() => {
-    // Render default controls
-    document.addEventListener('DOMContentLoaded', () => {
-        createContainer.div('body', 'div', 'id', 'new-task-container');
-        createContainer.div('body', 'div', 'id', 'task-list-container');
+const groupView = (() => {
+    const createView = (group) => {
+        createContainer.div('body', 'div', 'id', 'group-container');
+        createContainer.div('#group-container', 'div', 'id', 'header-container');
+        createContainer.div('#header-container', 'div', 'id', 'back-button', '<');
+        createContainer.header('#header-container', 'h1', group.groupName);
+        createContainer.div('#group-container', 'div', 'id', 'new-task-container');
+        createContainer.div('#group-container', 'div', 'id', 'task-list-container');
         createContainer.input('#new-task-container', 'title-input', 'Title');
         createContainer.input('#new-task-container', 'description-input', 'Description');
-        createContainer.button('#new-task-container', 'Add task', 'add-task')
-        document.querySelector('#add-task').addEventListener('click', addTask);
-    })
-    // Save default group
-    const defaultGroup = new Group('Default');
-    defaultGroup.current = true;
-    storageHandler.addToStorage(defaultGroup);
-    // Load group
-    const currentGroup = storageHandler.loadCurrentGroup();
-    // Render header
-    createContainer.header('body', 'h1', currentGroup.groupName, `group-${currentGroup.groupName}`);
+        createContainer.button('#new-task-container', 'Add task', 'add-task');
+        // Create tasks list
+        const tasks = group.getTasksList();
+        for (let task in tasks) {
+            createContainer.task(tasks[task], task)
+        }
+        document.querySelector('#add-task').addEventListener('click', addTaskContainer);
+        document.querySelector('#back-button').addEventListener('click', viewSwap.toGroupView)
+    }
+    const removeView = () => {
+        document.querySelector('#group-container').remove();
+    }
+    const addTaskContainer = () => {
+        const currentGroup = storageHandler.loadCurrentGroup();
+        const [ title, description ] = Array.from(document.querySelectorAll('input'));
+        // Add new task
+        const newTask = new Task(title.value, description.value)
+        currentGroup.addTaskToGroup(newTask);
+        // Reload list view
+        removeView();
+        createView(currentGroup);
+    }
+    const removeTaskContainer = (event) => {
+        // Get item id
+        const checkboxId = event.target.id;
+        const [ , itemId ] = checkboxId.split('-')
+        // Load item from group
+        const currentGroup = storageHandler.loadCurrentGroup();
+        currentGroup.removeTaskFromGroup(itemId);
+        // Reload list view
+        removeView();
+        createView(currentGroup);
+    }
+    return { createView, removeView, addTaskContainer, removeTaskContainer }
 })();
 
 
-const renderTasksList = (groupObject) => {
-    const tasks = groupObject.getTasksList();
-    for (let task of tasks) {
-        createContainer.task(task)
+const groupSelectView = (() => {
+    const createView = () => {
+        createContainer.div('body', 'div', 'id', 'group-view-container');
+        createContainer.div('#group-view-container', 'div', 'id', 'new-group-container');
+        createContainer.input('#new-group-container', 'group-input', 'New group name');
+        createContainer.button('#new-group-container', 'Add group', 'add-group');
+        createContainer.div('#group-view-container', 'div', 'id', 'group-select-container');
+        document.querySelector('#add-group').addEventListener('click', addGroupContainer);
+        const groups = storageHandler.loadAllGroups();
+        for (let group in groups) {
+            createContainer.group(groups[group], group);
+        }
     }
-}
+    const addGroupContainer = () => {
+        const name = document.querySelector('input');
+        const newGroup = new Group(name.value);
+        storageHandler.addToStorage(newGroup);
+        removeView();
+        createView();
+    }
+    const removeView = () => {
+        document.querySelector('#group-view-container').remove();
+    }
+    return { createView, addGroupContainer, removeView }
+})();
 
-// Create new task
-const addTask = () => {
-    // Load current group
-    const currentGroup = storageHandler.loadCurrentGroup();
-    const [ title, description ] = Array.from(document.querySelectorAll('input'));
-    // Add new task
-    const newTask = new Task(title.value, description.value)
-    currentGroup.addTaskToGroup(newTask);
-    renderTasksList(currentGroup)
-    //createContainer.task(newTask);
-}
+
+const viewSwap = (() => {
+    const toGroupView = () => {
+        // Load current group
+        const currentGroup = storageHandler.loadCurrentGroup();
+        currentGroup.current = false;
+        // Remove view
+        groupView.removeView();
+        groupSelectView.createView();
+    }
+    const toTasksView = (event) => {
+        const itemId = event.target.id;
+        const [ , groupId ] = itemId.split('-');
+        const group = storageHandler.loadGroup(groupId);
+        group.current = true;
+        groupSelectView.removeView();
+        groupView.createView(group);
+    }
+    return { toGroupView, toTasksView }
+})();
+
+
+const setDefaultView = (() => {
+    // Create and save default group
+    const defaultGroup = new Group('Default');
+    defaultGroup.current = true;
+    storageHandler.addToStorage(defaultGroup);
+    // Render default controls
+    const loadedGroup = storageHandler.loadCurrentGroup();
+    document.addEventListener('DOMContentLoaded', groupView.createView(loadedGroup));
+})();

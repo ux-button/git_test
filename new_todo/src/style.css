@@ -1,0 +1,63 @@
+#back-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    background-color: lightgray;
+    border-radius: 16px;
+}
+#header-container {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+}
+#new-task-container {
+    padding: 16px;
+    border-radius: 16px;
+    background-color: rgb(238, 255, 238);
+}
+#task-list-container {
+    padding: 8px 0;
+    display: grid;
+    gap: 4px;
+    grid-template: 1fr / 1fr;
+    grid-auto-columns: 1fr;
+}
+#group-select-container {
+    padding: 8px 0;
+    display: grid;
+    grid-template: 1fr / 1fr;
+    grid-auto-columns: 1fr;
+    gap: 8px;
+}
+#new-group-container {
+    padding: 16px;
+    border-radius: 16px;
+    background-color: rgb(238, 255, 238);
+}
+.group-item {
+    padding: 16px;
+    background-color: lightpink;
+    border-radius: 16px;
+}
+.task-item {
+    display: grid;
+    grid-template: 1fr 1fr / 20px 1fr 1fr;
+    padding: 16px;
+    border-radius: 16px;
+    background-color: rgb(229, 229, 229);
+}
+.task-item-checkbox {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+.task-item-title {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+.task-item-description {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
