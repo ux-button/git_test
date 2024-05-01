@@ -86,10 +86,12 @@ const createContainer = (() => {
     }
     const task = (taskObject, taskId) => {
         const container = document.querySelector('#task-list-container');
+
         // Item container
         const taskContainer = document.createElement('div');
         taskContainer.setAttribute('id', `task-${taskId}`);
         taskContainer.classList.add('task-item')
+
         // Checkbox
         const checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
@@ -98,25 +100,30 @@ const createContainer = (() => {
         checkbox.textContent = 'Delete';
         checkbox.addEventListener('click', groupView.removeTaskContainer)
         taskContainer.appendChild(checkbox);
+
         // Title
         const taskTitle = document.createElement('div');
         taskTitle.classList.add('task-item-title')
         taskTitle.textContent = taskObject.title;
         taskContainer.appendChild(taskTitle)
+
         // Description
         const taskDescription = document.createElement('div');
         taskDescription.classList.add('task-item-description')
         taskDescription.textContent = taskObject.description;
         taskContainer.appendChild(taskDescription);
+
         // Render item
         container.appendChild(taskContainer);
     }
     const group = (groupObject, groupId) => {
         const container = document.querySelector('#group-select-container');
+
         // Item container
         const groupContainer = document.createElement('div');
         groupContainer.setAttribute('id', `group-${groupId}`);
-        groupContainer.classList.add('group-item')
+        groupContainer.classList.add('group-item');
+
         // Title
         const groupTitle = document.createElement('div');
         groupTitle.textContent = groupObject.groupName;
@@ -142,6 +149,7 @@ const groupView = (() => {
         createContainer.input('#new-task-container', 'title-input', 'Title');
         createContainer.input('#new-task-container', 'description-input', 'Description');
         createContainer.button('#new-task-container', 'Add task', 'add-task');
+
         // Create tasks list
         const tasks = group.getTasksList();
         for (let task in tasks) {
@@ -156,20 +164,25 @@ const groupView = (() => {
     const addTaskContainer = () => {
         const currentGroup = storageHandler.loadCurrentGroup();
         const [ title, description ] = Array.from(document.querySelectorAll('input'));
+
         // Add new task
         const newTask = new Task(title.value, description.value)
         currentGroup.addTaskToGroup(newTask);
+
         // Reload list view
         removeView();
         createView(currentGroup);
     }
     const removeTaskContainer = (event) => {
+
         // Get item id
         const checkboxId = event.target.id;
         const [ , itemId ] = checkboxId.split('-')
+
         // Load item from group
         const currentGroup = storageHandler.loadCurrentGroup();
         currentGroup.removeTaskFromGroup(itemId);
+
         // Reload list view
         removeView();
         createView(currentGroup);
@@ -207,9 +220,11 @@ const groupSelectView = (() => {
 
 const viewSwap = (() => {
     const toGroupView = () => {
+
         // Load current group
         const currentGroup = storageHandler.loadCurrentGroup();
         currentGroup.current = false;
+
         // Remove view
         groupView.removeView();
         groupSelectView.createView();
@@ -227,10 +242,12 @@ const viewSwap = (() => {
 
 
 const setDefaultView = (() => {
+
     // Create and save default group
     const defaultGroup = new Group('Default');
     defaultGroup.current = true;
     storageHandler.addToStorage(defaultGroup);
+    
     // Render default controls
     const loadedGroup = storageHandler.loadCurrentGroup();
     document.addEventListener('DOMContentLoaded', groupView.createView(loadedGroup));

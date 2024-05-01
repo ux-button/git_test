@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="dropdown.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="dropdown-container">
+        <div id="dropdown">Choose option</div>
+        <div id="list-container" class="hidden">
+            <div class="drop-item">Edit</div>
+            <div class="drop-item">Rename</div>
+            <div class="drop-item">Delete</div>
+        </div>
+    </div>
+    <div id="gallery">
+        <div id="left" class="arrow"><</div>
+        <div style="display: block;">
+            <div id="gallery-viewport">
+                <div id="gallery-containder">
+                    <div class="img-item img1"></div>
+                    <div class="img-item img2"></div>
+                    <div class="img-item img3"></div>
+                    <div class="img-item img4"></div>
+                    <div class="img-item img5"></div>
+                </div>
+            </div>
+            <div id="circles-container">
+                <div class="circle active"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+        <div id="right" class="arrow">></div>
+    </div>
+</body>
+</html>
