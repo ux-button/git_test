@@ -1,0 +1,12 @@
+.error.active {
+    background-color: red;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+input:valid {
+    background-color: lightgreen;
+}
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="validation.js" defer></script>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <form>
+        <label for="mail">
+            <div>Enter e-mail</div>
+            <input autofocus name="email" id="email"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                placeholder="name@mail.com" type="email"
+                required>
+            <div class="error"></div>
+        </label>
+        <label for="country">
+            <div>Enter country</div>
+            <select name="country" id="country" required>
+                <option value="fr">France</option>
+                <option value="de">Germany</option>
+                <option value="uk">United Kingdom</option>
+            </select>
+            <div class="error"></div>
+        </label>
+        <label for="zipcode">
+            <div>Enter ZIP-code</div>
+            <input name="zipcode" id="zipcode" placeholder="000000" type="text" required>
+            <div class="error"></div>
+        </label>
+        <label for="password">
+            <div>Create password</div>
+            <input name="password" id="password" placeholder="Password" type="password" required>
+            <div class="error"></div>
+        </label>
+        <label for="confirmation">
+            <div>Retype password</div>
+            <input name="confirmation" id="confirmation" placeholder="Password" type="password" required>
+            <div class="error"></div>
+        </label>
+        <button>Submit</button>
+    </form>
+</body>
+</html>
