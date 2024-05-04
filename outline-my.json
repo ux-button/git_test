@@ -1,0 +1,8 @@
+{
+    "server":"45.126.127.91",
+    "server_port":64477,
+    "local_port":1080,
+    "password":"5Iwbms0bQSI6PnBdewsWpK",
+    "method":"chacha20-ietf-poly1305",
+    "remarks": "Outline Server"
+}

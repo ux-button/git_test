@@ -22,11 +22,9 @@
 .visible {
     visibility: visible;
 }
-
 .hidden {
     visibility: hidden;
 }
-
 
 #gallery {
     display: flex;
@@ -34,8 +32,8 @@
     gap: 10px;
 }
 #gallery-viewport {
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 300px;
     overflow: hidden;
     position: relative;
 }
@@ -65,31 +63,31 @@
     background-color: black;
 }
 .img-item {
-    min-height: 100px;
-    min-width: 100px;
+    min-height: 300px;
+    min-width: 300px;
 }
 
 .img1 {
     background-image: url(./static/IMG_2198A.png);
-    background-size: 100px;
+    background-size: 300px;
 }
 
 .img2 {
     background-image: url(./static/IMG_2198B.png);
-    background-size: 100px;
+    background-size: 300px;
 }
 
 .img3 {
     background-image: url(./static/IMG_2198C.png);
-    background-size: 100px;
+    background-size: 300px;
 }
 
 .img4 {
     background-image: url(./static/IMG_2198D.png);
-    background-size: 100px;
+    background-size: 300px;
 }
 
 .img5 {
     background-image: url(./static/IMG_2198E.png);
-    background-size: 100px;
+    background-size: 300px;
 }

@@ -31,7 +31,7 @@ const gallery = (() => {
         if (counter > (imagesQuantity - 1)) {
             counter = 0;
         }
-        viewportBox.style.cssText = `left: -${counter}00px;`;
+        viewportBox.style.cssText = `left: -${counter * 3}00px;`;
         setIndicator();
     }
     const previousSlide = () => {
@@ -39,7 +39,7 @@ const gallery = (() => {
         if (counter < 0) {
             counter = (imagesQuantity - 1);
         }
-        viewportBox.style.cssText = `left: -${counter}00px;`;
+        viewportBox.style.cssText = `left: -${counter * 3}00px;`;
         setIndicator();
     }
     const autoSlide = (() => {
