@@ -7,8 +7,7 @@ const locationName = document.querySelector('#weather .text-regular');
 const getWeather = async () => {
     const location = searchInput.value;
     const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=adae81d255dd4ec6a2a91652241005&q=${location}`);
-    const data = await response.json();
-    return data;
+    return await response.json();
 }   
 
 const showWeather = async () => {
