@@ -5,3 +5,52 @@
 .text-regular {
     font-size: medium;
 }
+
+#weather {
+    width: 120px;
+    height: fit-content;
+    margin-top: 24px;
+    padding: 16px;
+    border-radius: 16px;
+    color: black;
+}
+.color-01 {
+    background: #A6A1EA;
+    background: radial-gradient(at center bottom, #A6A1EA, #E1D4EF);
+}
+.color-02 {
+    background: #7194EF;
+    background: radial-gradient(at center bottom, #7194EF, #E1D4EF);
+}
+.color-03 {
+    background: #62A2E9;
+    background: radial-gradient(at center bottom, #62A2E9, #E1D4EF);
+}
+.color-04 {
+    background: #7ADACF;
+    background: radial-gradient(at center bottom, #7ADACF, #E1D4EF);
+}
+.color-05 {
+    background: #8BD6A4;
+    background: radial-gradient(at center bottom, #8BD6A4, #E1D4EF);
+}
+.color-06 {
+    background: #D2DFBC;
+    background: radial-gradient(at center bottom, #D2DFBC, #E1D4EF);
+}
+.color-07 {
+    background: #F3D1AE;
+    background: radial-gradient(at center bottom, #F3D1AE, #E1D4EF);
+}
+.color-08 {
+    background: #F5BC7A;
+    background: radial-gradient(at center bottom, #F5BC7A, #E1D4EF);
+}
+.color-09 {
+    background: #EE9975;
+    background: radial-gradient(at center bottom, #EE9975, #E1D4EF);
+}
+.color-10 {
+    background: #ED8173;
+    background: radial-gradient(at center bottom, #ED8173, #E1D4EF);
+}
